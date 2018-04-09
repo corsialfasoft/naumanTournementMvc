@@ -1,0 +1,427 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GeTorneoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Attributi">
+          <Key>
+            <PropertyRef Name="idAttributo" />
+          </Key>
+          <Property Name="idAttributo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Forza" Type="int" />
+          <Property Name="Difesa" Type="int" />
+          <Property Name="Armatura" Type="int" />
+          <Property Name="HP" Type="int" />
+          <Property Name="PExpt" Type="int" />
+        </EntityType>
+        <EntityType Name="Iscrizioni">
+          <Key>
+            <PropertyRef Name="idIscrizione" />
+          </Key>
+          <Property Name="idIscrizione" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fkTorneo" Type="int" />
+          <Property Name="fkUtente" Type="int" />
+        </EntityType>
+        <EntityType Name="Personaggi">
+          <Key>
+            <PropertyRef Name="idPersonaggio" />
+          </Key>
+          <Property Name="idPersonaggio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="20" />
+          <Property Name="Descrizione" Type="nvarchar" MaxLength="200" />
+          <Property Name="fkAttributo" Type="int" />
+        </EntityType>
+        <EntityType Name="Ruoli">
+          <Key>
+            <PropertyRef Name="idRuolo" />
+          </Key>
+          <Property Name="idRuolo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Tornei">
+          <Key>
+            <PropertyRef Name="idTorneo" />
+          </Key>
+          <Property Name="idTorneo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="20" />
+          <Property Name="Durata" Type="int" />
+          <Property Name="Num_Max" Type="int" />
+          <Property Name="Regolamento" Type="nvarchar" MaxLength="200" />
+          <Property Name="Premio" Type="int" />
+          <Property Name="Descrizione" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Utenti">
+          <Key>
+            <PropertyRef Name="idUtente" />
+          </Key>
+          <Property Name="idUtente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="20" />
+          <Property Name="Cognome" Type="varchar" MaxLength="20" />
+          <Property Name="Useri" Type="nvarchar" MaxLength="20" />
+          <Property Name="Passwd" Type="nvarchar" MaxLength="20" />
+          <Property Name="fkRuolo" Type="int" />
+          <Property Name="fkPersonaggio" Type="int" />
+        </EntityType>
+        <Association Name="FK__Iscrizion__fkTor__300424B4">
+          <End Role="Tornei" Type="Self.Tornei" Multiplicity="0..1" />
+          <End Role="Iscrizioni" Type="Self.Iscrizioni" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tornei">
+              <PropertyRef Name="idTorneo" />
+            </Principal>
+            <Dependent Role="Iscrizioni">
+              <PropertyRef Name="fkTorneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Iscrizion__fkUte__30F848ED">
+          <End Role="Utenti" Type="Self.Utenti" Multiplicity="0..1" />
+          <End Role="Iscrizioni" Type="Self.Iscrizioni" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utenti">
+              <PropertyRef Name="idUtente" />
+            </Principal>
+            <Dependent Role="Iscrizioni">
+              <PropertyRef Name="fkUtente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Personagg__fkAtt__276EDEB3">
+          <End Role="Attributi" Type="Self.Attributi" Multiplicity="0..1" />
+          <End Role="Personaggi" Type="Self.Personaggi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attributi">
+              <PropertyRef Name="idAttributo" />
+            </Principal>
+            <Dependent Role="Personaggi">
+              <PropertyRef Name="fkAttributo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Utenti__fkPerson__2B3F6F97">
+          <End Role="Personaggi" Type="Self.Personaggi" Multiplicity="0..1" />
+          <End Role="Utenti" Type="Self.Utenti" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personaggi">
+              <PropertyRef Name="idPersonaggio" />
+            </Principal>
+            <Dependent Role="Utenti">
+              <PropertyRef Name="fkPersonaggio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Utenti__fkRuolo__2A4B4B5E">
+          <End Role="Ruoli" Type="Self.Ruoli" Multiplicity="0..1" />
+          <End Role="Utenti" Type="Self.Utenti" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ruoli">
+              <PropertyRef Name="idRuolo" />
+            </Principal>
+            <Dependent Role="Utenti">
+              <PropertyRef Name="fkRuolo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AggiungiTorneo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nome" Type="varchar" Mode="In" />
+          <Parameter Name="Durata" Type="int" Mode="In" />
+          <Parameter Name="Num_Max" Type="int" Mode="In" />
+          <Parameter Name="Regolamento" Type="nvarchar" Mode="In" />
+          <Parameter Name="Premio" Type="float" Mode="In" />
+          <Parameter Name="Descrizione" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="GeTorneoModelStoreContainer">
+          <EntitySet Name="Attributi" EntityType="Self.Attributi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Iscrizioni" EntityType="Self.Iscrizioni" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Personaggi" EntityType="Self.Personaggi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ruoli" EntityType="Self.Ruoli" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tornei" EntityType="Self.Tornei" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Utenti" EntityType="Self.Utenti" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Iscrizion__fkTor__300424B4" Association="Self.FK__Iscrizion__fkTor__300424B4">
+            <End Role="Tornei" EntitySet="Tornei" />
+            <End Role="Iscrizioni" EntitySet="Iscrizioni" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Iscrizion__fkUte__30F848ED" Association="Self.FK__Iscrizion__fkUte__30F848ED">
+            <End Role="Utenti" EntitySet="Utenti" />
+            <End Role="Iscrizioni" EntitySet="Iscrizioni" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Personagg__fkAtt__276EDEB3" Association="Self.FK__Personagg__fkAtt__276EDEB3">
+            <End Role="Attributi" EntitySet="Attributi" />
+            <End Role="Personaggi" EntitySet="Personaggi" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Utenti__fkPerson__2B3F6F97" Association="Self.FK__Utenti__fkPerson__2B3F6F97">
+            <End Role="Personaggi" EntitySet="Personaggi" />
+            <End Role="Utenti" EntitySet="Utenti" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Utenti__fkRuolo__2A4B4B5E" Association="Self.FK__Utenti__fkRuolo__2A4B4B5E">
+            <End Role="Ruoli" EntitySet="Ruoli" />
+            <End Role="Utenti" EntitySet="Utenti" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GeTorneoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Attributi">
+          <Key>
+            <PropertyRef Name="idAttributo" />
+          </Key>
+          <Property Name="idAttributo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Forza" Type="Int32" />
+          <Property Name="Difesa" Type="Int32" />
+          <Property Name="Armatura" Type="Int32" />
+          <Property Name="HP" Type="Int32" />
+          <Property Name="PExpt" Type="Int32" />
+          <NavigationProperty Name="Personaggi" Relationship="Self.FK__Personagg__fkAtt__276EDEB3" FromRole="Attributi" ToRole="Personaggi" />
+        </EntityType>
+        <EntityType Name="Iscrizioni">
+          <Key>
+            <PropertyRef Name="idIscrizione" />
+          </Key>
+          <Property Name="idIscrizione" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fkTorneo" Type="Int32" />
+          <Property Name="fkUtente" Type="Int32" />
+          <NavigationProperty Name="Tornei" Relationship="Self.FK__Iscrizion__fkTor__300424B4" FromRole="Iscrizioni" ToRole="Tornei" />
+          <NavigationProperty Name="Utenti" Relationship="Self.FK__Iscrizion__fkUte__30F848ED" FromRole="Iscrizioni" ToRole="Utenti" />
+        </EntityType>
+        <EntityType Name="Personaggi">
+          <Key>
+            <PropertyRef Name="idPersonaggio" />
+          </Key>
+          <Property Name="idPersonaggio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Descrizione" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="fkAttributo" Type="Int32" />
+          <NavigationProperty Name="Attributi" Relationship="Self.FK__Personagg__fkAtt__276EDEB3" FromRole="Personaggi" ToRole="Attributi" />
+          <NavigationProperty Name="Utenti" Relationship="Self.FK__Utenti__fkPerson__2B3F6F97" FromRole="Personaggi" ToRole="Utenti" />
+        </EntityType>
+        <EntityType Name="Ruoli">
+          <Key>
+            <PropertyRef Name="idRuolo" />
+          </Key>
+          <Property Name="idRuolo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Utenti" Relationship="Self.FK__Utenti__fkRuolo__2A4B4B5E" FromRole="Ruoli" ToRole="Utenti" />
+        </EntityType>
+        <EntityType Name="Tornei">
+          <Key>
+            <PropertyRef Name="idTorneo" />
+          </Key>
+          <Property Name="idTorneo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Durata" Type="Int32" />
+          <Property Name="Num_Max" Type="Int32" />
+          <Property Name="Regolamento" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Premio" Type="Int32" />
+          <Property Name="Descrizione" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Iscrizioni" Relationship="Self.FK__Iscrizion__fkTor__300424B4" FromRole="Tornei" ToRole="Iscrizioni" />
+        </EntityType>
+        <EntityType Name="Utenti">
+          <Key>
+            <PropertyRef Name="idUtente" />
+          </Key>
+          <Property Name="idUtente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Cognome" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Useri" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Passwd" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="fkRuolo" Type="Int32" />
+          <Property Name="fkPersonaggio" Type="Int32" />
+          <NavigationProperty Name="Iscrizioni" Relationship="Self.FK__Iscrizion__fkUte__30F848ED" FromRole="Utenti" ToRole="Iscrizioni" />
+          <NavigationProperty Name="Personaggi" Relationship="Self.FK__Utenti__fkPerson__2B3F6F97" FromRole="Utenti" ToRole="Personaggi" />
+          <NavigationProperty Name="Ruoli" Relationship="Self.FK__Utenti__fkRuolo__2A4B4B5E" FromRole="Utenti" ToRole="Ruoli" />
+        </EntityType>
+        <Association Name="FK__Personagg__fkAtt__276EDEB3">
+          <End Role="Attributi" Type="Self.Attributi" Multiplicity="0..1" />
+          <End Role="Personaggi" Type="Self.Personaggi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attributi">
+              <PropertyRef Name="idAttributo" />
+            </Principal>
+            <Dependent Role="Personaggi">
+              <PropertyRef Name="fkAttributo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Iscrizion__fkTor__300424B4">
+          <End Role="Tornei" Type="Self.Tornei" Multiplicity="0..1" />
+          <End Role="Iscrizioni" Type="Self.Iscrizioni" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tornei">
+              <PropertyRef Name="idTorneo" />
+            </Principal>
+            <Dependent Role="Iscrizioni">
+              <PropertyRef Name="fkTorneo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Iscrizion__fkUte__30F848ED">
+          <End Role="Utenti" Type="Self.Utenti" Multiplicity="0..1" />
+          <End Role="Iscrizioni" Type="Self.Iscrizioni" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utenti">
+              <PropertyRef Name="idUtente" />
+            </Principal>
+            <Dependent Role="Iscrizioni">
+              <PropertyRef Name="fkUtente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Utenti__fkPerson__2B3F6F97">
+          <End Role="Personaggi" Type="Self.Personaggi" Multiplicity="0..1" />
+          <End Role="Utenti" Type="Self.Utenti" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personaggi">
+              <PropertyRef Name="idPersonaggio" />
+            </Principal>
+            <Dependent Role="Utenti">
+              <PropertyRef Name="fkPersonaggio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Utenti__fkRuolo__2A4B4B5E">
+          <End Role="Ruoli" Type="Self.Ruoli" Multiplicity="0..1" />
+          <End Role="Utenti" Type="Self.Utenti" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ruoli">
+              <PropertyRef Name="idRuolo" />
+            </Principal>
+            <Dependent Role="Utenti">
+              <PropertyRef Name="fkRuolo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GeTorneoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Attributi" EntityType="Self.Attributi" />
+          <EntitySet Name="Iscrizioni" EntityType="Self.Iscrizioni" />
+          <EntitySet Name="Personaggi" EntityType="Self.Personaggi" />
+          <EntitySet Name="Ruoli" EntityType="Self.Ruoli" />
+          <EntitySet Name="Tornei" EntityType="Self.Tornei" />
+          <EntitySet Name="Utenti" EntityType="Self.Utenti" />
+          <AssociationSet Name="FK__Personagg__fkAtt__276EDEB3" Association="Self.FK__Personagg__fkAtt__276EDEB3">
+            <End Role="Attributi" EntitySet="Attributi" />
+            <End Role="Personaggi" EntitySet="Personaggi" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Iscrizion__fkTor__300424B4" Association="Self.FK__Iscrizion__fkTor__300424B4">
+            <End Role="Tornei" EntitySet="Tornei" />
+            <End Role="Iscrizioni" EntitySet="Iscrizioni" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Iscrizion__fkUte__30F848ED" Association="Self.FK__Iscrizion__fkUte__30F848ED">
+            <End Role="Utenti" EntitySet="Utenti" />
+            <End Role="Iscrizioni" EntitySet="Iscrizioni" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Utenti__fkPerson__2B3F6F97" Association="Self.FK__Utenti__fkPerson__2B3F6F97">
+            <End Role="Personaggi" EntitySet="Personaggi" />
+            <End Role="Utenti" EntitySet="Utenti" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Utenti__fkRuolo__2A4B4B5E" Association="Self.FK__Utenti__fkRuolo__2A4B4B5E">
+            <End Role="Ruoli" EntitySet="Ruoli" />
+            <End Role="Utenti" EntitySet="Utenti" />
+          </AssociationSet>
+          <FunctionImport Name="AggiungiTorneo">
+            <Parameter Name="Nome" Mode="In" Type="String" />
+            <Parameter Name="Durata" Mode="In" Type="Int32" />
+            <Parameter Name="Num_Max" Mode="In" Type="Int32" />
+            <Parameter Name="Regolamento" Mode="In" Type="String" />
+            <Parameter Name="Premio" Mode="In" Type="Double" />
+            <Parameter Name="Descrizione" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GeTorneoModelStoreContainer" CdmEntityContainer="GeTorneoEntities">
+          <EntitySetMapping Name="Attributi">
+            <EntityTypeMapping TypeName="GeTorneoModel.Attributi">
+              <MappingFragment StoreEntitySet="Attributi">
+                <ScalarProperty Name="idAttributo" ColumnName="idAttributo" />
+                <ScalarProperty Name="Forza" ColumnName="Forza" />
+                <ScalarProperty Name="Difesa" ColumnName="Difesa" />
+                <ScalarProperty Name="Armatura" ColumnName="Armatura" />
+                <ScalarProperty Name="HP" ColumnName="HP" />
+                <ScalarProperty Name="PExpt" ColumnName="PExpt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Iscrizioni">
+            <EntityTypeMapping TypeName="GeTorneoModel.Iscrizioni">
+              <MappingFragment StoreEntitySet="Iscrizioni">
+                <ScalarProperty Name="idIscrizione" ColumnName="idIscrizione" />
+                <ScalarProperty Name="fkTorneo" ColumnName="fkTorneo" />
+                <ScalarProperty Name="fkUtente" ColumnName="fkUtente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Personaggi">
+            <EntityTypeMapping TypeName="GeTorneoModel.Personaggi">
+              <MappingFragment StoreEntitySet="Personaggi">
+                <ScalarProperty Name="idPersonaggio" ColumnName="idPersonaggio" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Descrizione" ColumnName="Descrizione" />
+                <ScalarProperty Name="fkAttributo" ColumnName="fkAttributo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ruoli">
+            <EntityTypeMapping TypeName="GeTorneoModel.Ruoli">
+              <MappingFragment StoreEntitySet="Ruoli">
+                <ScalarProperty Name="idRuolo" ColumnName="idRuolo" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tornei">
+            <EntityTypeMapping TypeName="GeTorneoModel.Tornei">
+              <MappingFragment StoreEntitySet="Tornei">
+                <ScalarProperty Name="idTorneo" ColumnName="idTorneo" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Durata" ColumnName="Durata" />
+                <ScalarProperty Name="Num_Max" ColumnName="Num_Max" />
+                <ScalarProperty Name="Regolamento" ColumnName="Regolamento" />
+                <ScalarProperty Name="Premio" ColumnName="Premio" />
+                <ScalarProperty Name="Descrizione" ColumnName="Descrizione" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Utenti">
+            <EntityTypeMapping TypeName="GeTorneoModel.Utenti">
+              <MappingFragment StoreEntitySet="Utenti">
+                <ScalarProperty Name="idUtente" ColumnName="idUtente" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Cognome" ColumnName="Cognome" />
+                <ScalarProperty Name="Useri" ColumnName="Useri" />
+                <ScalarProperty Name="Passwd" ColumnName="Passwd" />
+                <ScalarProperty Name="fkRuolo" ColumnName="fkRuolo" />
+                <ScalarProperty Name="fkPersonaggio" ColumnName="fkPersonaggio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AggiungiTorneo" FunctionName="GeTorneoModel.Store.AggiungiTorneo" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Nessuno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

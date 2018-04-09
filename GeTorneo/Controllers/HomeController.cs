@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeTorneo.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,6 +20,15 @@ namespace GeTorneo.Controllers {
 		public ActionResult Contact() {
 			ViewBag.Message = "Your contact page.";
 
+			return View();
+		}
+		public ActionResult addtorneo(){
+			return View();
+		}
+		IDomainModel model = new DomainModel();
+		[HttpPost]
+		public ActionResult addtorneo(Torneo torneo) {
+			model.Save(torneo);
 			return View();
 		}
 	}

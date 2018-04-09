@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "Addtorneo";
+}
+
+<h2>Addtorneo</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @using (Html.BeginForm("addtorneo", "Home", FormMethod.Post)) {
+        <div class="row">
+            <div class="col-md-6">
+                Nome
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="nome" required="Il campo è obligatorio" />
+                @Html.ValidationMessage("Nome", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                Descrizione
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="Descrizione" required="Il campo è obligatorio" />
+                @Html.ValidationMessage("Descrizione", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                Premio
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="Premio" required="Il campo è obligatorio" />
+                @Html.ValidationMessage("Premio", new { @class = "text-danger" })
+            </div>
+        </div>
+      
+        <div>
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+        }
+    </div>
+}
+
